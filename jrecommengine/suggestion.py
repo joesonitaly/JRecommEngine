@@ -1,4 +1,4 @@
-import math
+from math import fsum
 
 from django.core.exceptions import ObjectDoesNotExist
 
@@ -32,7 +32,7 @@ class Suggestion:
          indicesOfDislikes = [similarUser[1] for similarUser in similarUsers if movie in self.engine.moviesDislikedByUser(similarUser[0])]
 
          if indicesOfLikes or indicesOfDislikes:
-            weight = (math.fsum(indicesOfLikes) - math.fsum(indicesOfDislikes)) / (len(indicesOfLikes) + len(indicesOfDislikes))
+            weight = (fsum(indicesOfLikes) - fsum(indicesOfDislikes)) / (len(indicesOfLikes) + len(indicesOfDislikes))
 
             try:
                suggestion = SuggestionModel.objects.get(user=user, movie=movie)
