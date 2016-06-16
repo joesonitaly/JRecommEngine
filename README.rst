@@ -2,13 +2,13 @@
 JRecommEngine
 =============
 
-JRecommEngine is a collaborative-filtering recommendation engine.
+JRecommEngine is a collaborative-filtering recommendation engine for Django.
 It is based on the Jaccard similarity index.
 
 Quick start
 -----------
 
-1. Add "jrecommengine" to your INSTALLED_APPS setting like this::
+1. Add jrecommengine to your INSTALLED_APPS setting like this::
 
    INSTALLED_APPS = [
        ...
@@ -22,6 +22,6 @@ Quick start
                       "ITEM_MODEL": "app.model"
                    }
 
-2. Run migrations to create the jrecommengine models.
+3. Run migrations to create the jrecommengine models.
 
-3. If needed, random ratings can be generated using jrecommengine.random_ratings.setRandomRatings().
+4. If needed, random ratings can be generated using jrecommengine.random_ratings.setRandomRatings().

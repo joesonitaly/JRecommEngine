@@ -30,16 +30,10 @@ class Engine:
 
 
    def usersSimilarToUser(self, user):
-      self.updateSimilaritiesForUser(user)
       return [((similarity.user1 if (similarity.user2 == user) else similarity.user2), similarity.index) for similarity in Similarity.objects.filter(Q(user1=user) | Q(user2=user)).all()]
 
 
    def updateSimilaritiesForUser(self, user):
-      try:
-         user = User.objects.get(pk=user.pk)
-      except ObjectDoesNotExist:
-         return """ToDo: Add proper error handling."""
-
       userLikedItems = frozenset(self.itemsLikedByUser(user))
       userDislikedItems = frozenset(self.itemsDislikedByUser(user))
 
@@ -73,11 +67,6 @@ class Engine:
 
 
    def updateSuggestionsForUser(self, user):
-      try:
-         user = User.objects.get(pk=user.pk)
-      except ObjectDoesNotExist:
-         return """ToDo: Add proper error handling."""
-
       userLikedItems = self.itemsLikedByUser(user)
       userDislikedItems = self.itemsDislikedByUser(user)
 

@@ -1,6 +1,5 @@
 from django.core.exceptions import ObjectDoesNotExist
 
-from .config import *
 from .models import Like, Dislike
 
 
@@ -16,6 +15,8 @@ class Rating:
       else:
          Dislike.objects.create(user=user, item=item)
 
+      self.engine.updateSimilaritiesForUser(user)
+
 
    def remove(self, user, item):
       try:
@@ -23,5 +24,7 @@ class Rating:
             Like.objects.get(user=user, item=item).delete()
          else:
             Dislike.objects.get(user=user, item=item).delete()
+
+         self.engine.updateSimilaritiesForUser(user)
       except ObjectDoesNotExist:
          pass

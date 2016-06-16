@@ -18,6 +18,8 @@ def setRandomRatings():
    Like.objects.all().delete()
    Dislike.objects.all().delete()
 
+   Similarity.objects.all().delete()
+
    seed()
 
    for user in users:
@@ -50,8 +52,5 @@ def setRandomRatings():
             print("<Dislike: " + str(Dislike.objects.get(user=user, item=item)) + ">")
          except ObjectDoesNotExist:
             pass
-
-   Similarity.objects.all().delete()
-   Suggestion.objects.all().delete()
 
    print("\n***** Done *****")
