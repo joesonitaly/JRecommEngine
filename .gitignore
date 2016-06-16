@@ -2,6 +2,5 @@
 **/migrations/*
 !**/migrations/__init__.py
 *.pyc
-config
-manage.py
-*.db
+JRecommEngine.egg-info
+dist

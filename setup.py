@@ -7,12 +7,12 @@ with open(os.path.join(os.path.dirname(__file__), "README.rst")) as readme:
 os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
-    name="jrecommengine",
+    name="JRecommEngine",
     version="0.1",
     packages=find_packages(),
     include_package_data=True,
     license="BSD License",
-    description="A collaborative-filtering recommendation engine.",
+    description="A collaborative-filtering recommendation engine based on the Jaccard similarity index.",
     long_description=README,
     url="https://github.com/joesonitaly/jrecommengine",
     author="Joseph O. Onyewuche",
@@ -20,6 +20,7 @@ setup(
     classifiers=[
         "Environment :: Web Environment",
         "Framework :: Django",
+        "Framework :: Django :: 1.7"
         "Framework :: Django :: 1.8"
         "Framework :: Django :: 1.9"
         "Intended Audience :: Developers",

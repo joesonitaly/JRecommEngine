@@ -15,8 +15,13 @@ Quick start
        'jrecommengine',
    ]
 
-2. Run `python manage.py migrate` to create the jrecommengine models.
-   Alternatively, you can run the 'load-fixtures' module to install the
-   supplied sample data.
+2. Also in your INSTALLED_APPS setting, set the User and Item models::
 
-3. Random sample ratings can be installed using jrecommengine.ratings.setRandomRatings().
+   JRECOMMENGINE = {
+                      "USER_MODEL": "app.model",
+                      "ITEM_MODEL": "app.model"
+                   }
+
+2. Run migrations to create the jrecommengine models.
+
+3. If needed, random ratings can be generated using jrecommengine.random_ratings.setRandomRatings().

@@ -1,84 +1,54 @@
+from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
-from django.db.models import Q
 
 
-class User(models.Model):
-   username = models.CharField(max_length=255, verbose_name="Username", unique=True)
-
-   def __str__(self):
-      return self.username
-
-
-   class Meta:
-      verbose_name = "User"
-      verbose_name_plural = "Users"
-
-
-class Movie(models.Model):
-   title = models.CharField(max_length=255, verbose_name="Title")
-   year = models.PositiveSmallIntegerField(verbose_name="Year")
-
-   def __str__(self):
-      return self.title
-
-
-   class Meta:
-      unique_together = ("title", "year")
-      verbose_name = "Movie"
-      verbose_name_plural = "Movies"
+User = settings.JRECOMMENGINE["USER_MODEL"]
+Item = settings.JRECOMMENGINE["ITEM_MODEL"]
 
 
 class Like(models.Model):
    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="+", verbose_name="User")
-   movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name="+", verbose_name="Movie")
+   item = models.ForeignKey(Item, on_delete=models.CASCADE, related_name="+", verbose_name="Item")
 
    def save(self, *args, **kwargs):
-      try:
-         Like.objects.get(user=self.user, movie=self.movie)
-         return
-      except ObjectDoesNotExist:
-         super(Like, self).save(*args, **kwargs)
+      super(Like, self).save(*args, **kwargs)
 
-         try:
-            Dislike.objects.get(user=self.user, movie=self.movie).delete()
-         except ObjectDoesNotExist:
-            pass
+      try:
+         Dislike.objects.get(user=self.user, item=self.item).delete()
+      except ObjectDoesNotExist:
+         pass
 
 
    def __str__(self):
-      return "(User: " + str(self.user) + ", Movie: " + str(self.movie) + ")"
+      return "(User: " + str(self.user) + ", Item: " + str(self.item) + ")"
 
 
    class Meta:
-      unique_together = ("user", "movie")
+      unique_together = ("user", "item")
       verbose_name = "Like"
       verbose_name_plural = "Likes"
 
 
 class Dislike(models.Model):
    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="+", verbose_name="User")
-   movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name="+", verbose_name="Movie")
+   item = models.ForeignKey(Item, on_delete=models.CASCADE, related_name="+", verbose_name="Item")
 
    def save(self, *args, **kwargs):
-      try:
-         Dislike.objects.get(user=self.user, movie=self.movie)
-         return
-      except ObjectDoesNotExist:
-         super(Dislike, self).save(*args, **kwargs)
+      super(Dislike, self).save(*args, **kwargs)
 
-         try:
-            Like.objects.get(user=self.user, movie=self.movie).delete()
-         except ObjectDoesNotExist:
-            pass
+      try:
+         Like.objects.get(user=self.user, item=self.item).delete()
+      except ObjectDoesNotExist:
+         pass
 
 
    def __str__(self):
-      return "(User: " + str(self.user) + ", Movie: " + str(self.movie) + ")"
+      return "(User: " + str(self.user) + ", Item: " + str(self.item) + ")"
 
 
    class Meta:
-      unique_together = ("user", "movie")
+      unique_together = ("user", "item")
       verbose_name = "Dislike"
       verbose_name_plural = "Dislikes"
 
@@ -101,15 +71,15 @@ class Similarity(models.Model):
 
 class Suggestion(models.Model):
    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="+", verbose_name="User")
-   movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name="+", verbose_name="Movie")
+   item = models.ForeignKey(Item, on_delete=models.CASCADE, related_name="+", verbose_name="Item")
    weight = models.FloatField(verbose_name="Weight")
 
    def __str__(self):
-      return "(User: " + str(self.user) + ", Movie: " + str(self.movie) + ", Weight: " + str(self.weight) + ")"
+      return "(User: " + str(self.user) + ", Item: " + str(self.item) + ", Weight: " + str(self.weight) + ")"
 
 
    class Meta:
-      unique_together = ("user", "movie")
+      unique_together = ("user", "item")
       verbose_name = "Suggestion"
       verbose_name_plural = "Suggestions"
       ordering = ("-weight",)
